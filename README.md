@@ -177,3 +177,140 @@ void  *ft_memmove(void *dest, const void *src, size_t n)
   return (dest);
 }
 ```
+```c
+#include "libft.h"
+
+size_t  ft_strlcpy(char *dest, const char *src, size_t size)
+{
+  // 복사하려는 문자열의 길이를 반환(return the total length of the string they tried to create.)
+  size_t  src_len;
+  size_t  idx;
+  
+  src_len = ft_strlen(src);
+  idx = 0;
+  if (!(*dest || *src))
+    return (0);
+  while (idx < src_len && idx + 1 < size)
+  {
+    dest[idx] = src[idx];
+    idx++;
+  }
+  dest[idx] = '\0';
+  return (src_len);
+}
+```
+```c
+#include "libft.h"
+
+size_t  ft_strlcat(char *dest, const char *src, size_t size)
+{
+  //이으려고 하는 총 문자열의 길이를 반환(return the total length of the string they tried to create.)
+  size_t  dest_len;
+  size_t  src_len;
+  size_t  idx;
+  
+  dest_len = ft_strlen(dest);
+  src_len = ft_strlen(src);
+  if (dest_len <= size)
+    return (src_len + size);
+  while (dest[dest_len + idx] && (dest_len + idx + 1) < size)
+  {
+    dest[dest_len + idx] = src[idx];
+    idx++;
+  }
+  dest[dest_len + idx] = '\0';
+  return (dest_len + src_len);
+  
+}
+```
+```c
+static int  ft_islower(int c)
+{
+  return (c - 'a' < 26);
+}
+
+int ft_toupper(int c)
+{
+  if (ft_islower(c))
+    return (c & 0x5f);
+  return (c);
+}
+```
+```c
+static int  ft_isupper(int c)
+{
+  return (c - 'A' < 26);
+}
+
+int ft_tolower(int c)
+{
+  if (ft_isupper(c))
+    return (c | 32);
+  return (c);
+}
+```
+```c
+char  *ft_strchr(const char *s, int c)
+{
+  // return a pointer to the first occurrence of the character c in the string s.
+  // return NULL if the not found.
+  // the terminating null byte is considered part of the string.
+  char  find;
+  char  *ret;
+  
+  find = (char)c;
+  ret = (char *)s;
+  while (*ret)
+  {
+    if (*ret == find)
+      return (ret)
+    ret++;
+  }
+  if (*ret == find)
+    return (ret);
+  return (0);
+}
+```
+```c
+#include "libft.h"
+
+char  *ft_strrchr(const char *s, int c)
+{
+  // return a pointer to the last occurrence of the character c in the string s.
+  // return NULL if the not found.
+  // the terminating null byte is considered part of the string.
+  int         s_len;
+  char        find;
+  const char  *ret;
+  
+  s_len = ft_strlen(s);
+  find = (char)c;
+  ret = &s[s_len];
+  while (s_len)
+  {
+    if (ret[s_len] == find)
+      return (&ret[s_len]);
+    s_len--;
+  }
+  if (ret[s_len] == find)
+    return (&ret[s_len]);
+  return (0);
+}
+```
+```c
+int ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+  // return an integer less than, equal to, or greater than zero if s1 is found,
+  // respectively, to be less than, to match, or be greater than s2.
+  size_t  idx;
+  
+  idx = 0;
+  while (s1[idx] && s2[idx] && idx < n)
+  {
+    if (s1[idx] != s2[idx])
+      return ((int)(s1[idx] - s2[idx]));
+    idx++;
+  }
+  return ((int)(s1[idx] - s2[idx]));
+}
+```
