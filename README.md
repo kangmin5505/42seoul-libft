@@ -53,6 +53,8 @@ void    *ft_memchr(const void *src, int c, size_t n);
 int     ft_memcmp(const void *s1, const void *s2, size_t n);
 char    *ft_strnstr(const char *big, const char *little, size_t len);
 int     ft_atoi(const char *nptr);
+void    *ft_calloc(size_t count, size_t size);
+char    *ft_strdup(const char *s1);
 ```
 
 - Impliement
@@ -169,19 +171,19 @@ void  *ft_memmove(void *dest, const void *src, size_t n)
   unsigned char        *d;
   const unsigned char  *s;
   
-  d = (unsigned char *)dest;
-  s = (const unsigned char *)src;
-  if (d == s)
+  if (dest == src)
     return (dest);
-  if (d < s)
-  {
-    while(n--)
-      *d++ = *s++;
-  }
+  else if (dest < src)
+    dest = ft_memcpy(dest, src, n);
   else
   {
-    while(n--)
+    d = (unsigned char *)dest;
+    s = (const unsigned char *)src;
+    while (n)
+    {
       d[n] = s[n];
+      n--;
+    }
   }
   return (dest);
 }
@@ -434,5 +436,48 @@ int ft_atoi(const char *nptr)
   while (ft_isdigit(*s))
     n = 10 * n - (*s++ - '0');
   return (neg * n);
+}
+```
+```c
+#include "libft.h"
+
+void    *ft_calloc(size_t count, size_t size)
+{
+  // "memory allocation"
+  // contiguously allocates enough space for count objects that are size bytes of memory each and returns a pointer to the allocated memory. => contiguously??
+  // is filled with bytes of value zero.
+  void  *mem;
+  
+  if (!(mem = malloc(count  * size)))
+    return (0);
+  ft_memset(mem, 0, (count * size));
+  return (mem);
+}
+```
+```c
+#include "libft.h"
+
+char  *ft_strdup(const char *s1)
+{
+  // "save a copy of a string"
+  // allocate sufficient memory for a copy of the string s1, does the copy, and returns a pointer to it.
+  // If insufficient memory is available, NULL is returned and errno is set to ENOMEM.
+  // => what is "errno is set to ENOMEM"?
+  size_t  s_len;
+  char    *mem;
+  size_t  idx;
+  
+  s_len = ft_strlen(s1);
+  mem = (char *)malloc(s_len * sizeof(char));
+  if (!mem)
+    return (0);
+  idx = 0;
+  while (*s1)
+  {
+    mem[idx] = s1[idx];
+    idx++;
+  }
+  mem[idx] = '\0';
+  return (mem);
 }
 ```
