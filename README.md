@@ -98,6 +98,8 @@ int ft_isprint(int c)
 }
 ```
 ```c
+#include "libft.h"
+
 size_t  ft_strlen(const char *s)
 {
   // 주소의 차이를 통해 길이를 구함
@@ -106,10 +108,12 @@ size_t  ft_strlen(const char *s)
   a = s;
   while (*a)
     a++;
-  return (a - s);
+  return ((size_t)(a - s));
 }
 ```
 ```c
+#include "libft.h"
+
 void  *ft_memset(void *s, int c, size_t n)
 {
   // "fill memory with a constant byte"
@@ -136,6 +140,8 @@ void  ft_bzero(void *s, size_t n)
 }
 ```
 ```c
+#include "libft.h"
+
 void  *ft_memcpy(void *dest, const void *src, size_t n)
 {
   // "copy memory area"
@@ -150,7 +156,7 @@ void  *ft_memcpy(void *dest, const void *src, size_t n)
   s = (const unsigned char *)src;
   while (idx++ < n)
     *d++ = *s++;
-  return (d);
+  return (dest);
 }
 ```
 ```c
@@ -167,7 +173,7 @@ void  *ft_memmove(void *dest, const void *src, size_t n)
   s = (const unsigned char *)src;
   if (d == s)
     return (dest);
-  if (d >= s)
+  if (d < s)
   {
     while(n--)
       *d++ = *s++;
@@ -229,7 +235,7 @@ size_t  ft_strlcat(char *dest, const char *src, size_t size)
 ```c
 static int  ft_islower(int c)
 {
-  return (c - 'a' < 26);
+  return ((unsigned)c - 'a' < 26);
 }
 
 int ft_toupper(int c)
@@ -242,7 +248,7 @@ int ft_toupper(int c)
 ```c
 static int  ft_isupper(int c)
 {
-  return (c - 'A' < 26);
+  return ((unsigned)c - 'A' < 26);
 }
 
 int ft_tolower(int c)
@@ -303,6 +309,8 @@ char  *ft_strrchr(const char *s, int c)
 }
 ```
 ```c
+#include "libft.h"
+
 int ft_strncmp(const char *s1, const char *s2, size_t n)
 {
   // "compare two strings"
@@ -324,6 +332,8 @@ int ft_strncmp(const char *s1, const char *s2, size_t n)
 }
 ```
 ```c
+#include "libft.h"
+
 void  *ft_memchr(const void *src, int c, size_t n)
 {
   // "scan memory for a character"
@@ -343,6 +353,8 @@ void  *ft_memchr(const void *src, int c, size_t n)
 }
 ```
 ```c
+#include "libft.h"
+
 int ft_memcmp(const void *s1, const void *s2, size_t n)
 {
   // "compare memory areas"
@@ -367,8 +379,11 @@ int ft_memcmp(const void *s1, const void *s2, size_t n)
 ```
 ```c
 #include "libft.h"
+
 char  *ft_strnstr(const char *str, const char *substr, size_t len)
 {
+  // "locate a substring in a string"
+  // locates the first occurrence of the null-terminated string needle in the string haystack, where not more than len characters are searched.
   size_t      substr_len;
   const char  *s;
   
@@ -412,7 +427,10 @@ int ft_atoi(const char *nptr)
   if (*s == '+')
     s++;
   else if (*s == '-')
+  {
     neg = 1;
+    s++;
+  }
   while (ft_isdigit(*s))
     n = 10 * n - (*s++ - '0');
   return (neg * n);
