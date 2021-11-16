@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 14:32:05 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/16 18:51:30 by kangkim          ###   ########.fr       */
+/*   Created: 2021/11/16 17:09:32 by kangkim           #+#    #+#             */
+/*   Updated: 2021/11/16 17:10:49 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_calloc(size_t count, size_t size)
 {
-	unsigned char		*d;
-	const unsigned char	*s;
+	void	*mem;
 
-	if (dest == src)
-		return (dest);
-	else if (dest < src)
-		dest = ft_memcpy(dest, src, n);
-	else
-	{
-		d = (unsigned char *)dest;
-		s = (const unsigned char *)src;
-		while (n--)
-		{
-			d[n] = s[n];
-			n--;
-		}
-	}
-	return (dest);
+	if (!(mem = malloc(count * size)))
+		return (0);
+	ft_memset(mem, 0, (count * size));
+	return (mem);
+}

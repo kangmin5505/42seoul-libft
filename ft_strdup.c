@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 14:32:05 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/16 18:51:30 by kangkim          ###   ########.fr       */
+/*   Created: 2021/11/16 18:52:28 by kangkim           #+#    #+#             */
+/*   Updated: 2021/11/16 18:54:32 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+char	*ft_strdup(const char *s1)
 {
-	unsigned char		*d;
-	const unsigned char	*s;
+	size_t	s_len;
+	char	*mem;
+	size_t	idx;
 
-	if (dest == src)
-		return (dest);
-	else if (dest < src)
-		dest = ft_memcpy(dest, src, n);
-	else
+	s_len = ft_strlen(s1);
+	mem = (char *)malloc(s_len * sizeof(char));
+	if (!mem)
+		return (0);
+	idx = 0;
+	while (*s1)
 	{
-		d = (unsigned char *)dest;
-		s = (const unsigned char *)src;
-		while (n--)
-		{
-			d[n] = s[n];
-			n--;
-		}
+		mem[idx] = s1[idx];
+		idx++;
 	}
-	return (dest);
+	mem[idx] = '\0';
+	return (mem);
+}
