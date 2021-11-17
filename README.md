@@ -492,3 +492,398 @@ char  *ft_strdup(const char *s1)
   return (mem);
 }
 ```
+```c
+#include "libft.h"
+
+char    *ft_substr(char const *s, unsigned int start, size_t len)
+{
+  // "Allocates and returns a substring from the string 's'. The substring begins at index 'start' and is of maximum size 'len'"
+  // s : the string from which to create the substring
+  // start : the start index of the substring in the string 's'
+  // len :the maximum length of the substring
+  // return value : the substring. NULL if the allocation fails
+  // 예외처리 : s가 NULL일 때, start가 s의 길이보다 길 때, start 인덱스부터의 s의 길이가 len 보다 작을 때, 메모리 할당 못 받았을 때
+  // 사용함수 : ft_strlcpy
+  unsigned int  s_len;
+  size_t        new_len;
+  char          *substr;
+  
+  s_len = (unsigned int)ft_strlen(s);
+  if (!s || (s_len < start))
+    return (NULL);
+  new_len = ft_strlen(s + start);
+  if (new_len < len)
+    len = new_len;
+  substr = (char *)malloc((len + 1) * sizeof(char));
+  if (!substr)
+    return (NULL);
+  ft_strlcpy(substr, s + start, len + 1);
+  return (substr);
+}
+```
+```c
+#include "libft.h"
+
+char    *ft_strjoin(char const *s1, char const *s2)
+{
+  //"Allocates and returns a new string, which is the result of the concatenation of 's1' and 's2'"
+  // s1 : the prefix string
+  // s2 : the suffix string
+  // return value : the new string. NULL if the allocation fails
+  // 예외처리 : s1와 s2가 모두 없는 경우 NULL, 둘(s1, s2) 중 하나만 있는 경우 ft_strdup, 메모리 할당 못 받았을 때
+  // 사용함수 : ft_strdup, ft_strlen, ft_strlcpy, ft_strlcat
+  char    *ret_str;
+  size_t  s1_len;
+  size_t  s2_len;
+  
+  if (!s1 && !s2)
+    return (NULL);
+  else if (!s1 || !s2)
+  {
+    if (!s1)
+      return (ft_strdup(s2));
+    else
+      return (ft_strdup(s1));
+  }
+  s1_len = ft_strlen(s1);
+  s2_len = ft_strlen(s2);
+  ret_str = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+  if (!new_str)
+    return (NULL);
+  ft_strlcpy(ret_str, s1, s1_len + 1);
+  ft_strlcat(ret_str, s2, s1_len + s2_len + 1);
+  return (ret_str);
+}
+```
+```c
+static size_t ft_get_start_idx(const char const *s1, const char const *set)
+{
+  size_t  s1_len;
+  size_t  idx;
+  
+  s1_len = ft_strlen(s1);
+  idx = 0;
+  while (idx < s1_len)
+  {
+    if (ft_strchr(set, s1[idx]) == 0)
+      break ;
+    idx++;
+  }
+  return (idx);
+}
+
+static size_t ft_get_end_idx(const char const *s1, const char const *set)
+{
+  size_t  s1_len;
+  size_t  idx;
+  
+  s1_len = ft_strlen(s1);
+  idx = 0;
+  while (idx < s1_len)
+  {
+    if (ft_strchr(set, s1[s1_len - idx - 1]) == 0)
+      break ;
+    idx++;
+  }
+  return (s1_len - idx);
+}
+
+char    *ft_strtrim(char const *s1, char const *set)
+{
+  // "Allocates and returns a copy of 's1' with the characters specified in 'set' removed from the beginning and the end of the string"
+  // s1 : the string toe be trimmed
+  // s2 : the reference set of characters to trim
+  // return value : the trimmed string. NULL if the allocation fails
+  // 예외처리 : s1이 NULL인 경우, set이 NULL인 경우, 메모리 할당을 못 받았을 경우
+  // 사용함수 : ft_strdup, ft_strchr, ft_strrchr, ft_strlen
+  char    *ret_str;
+  size_t  start_idx;
+  size_t  end_idx;
+  
+  if (!s1)
+    return (NULL);
+  else if (!set)
+    return (ft_strdup(s1));
+  start_idx = ft_get_start_idx(s1, set);
+  end_idx = ft_get_end_idx(s1, set);
+  ret_str = (char *)malloc(sizeof(char) * (end_idx - start_idx + 1));
+  if (!ret_str)
+    return (NULL);
+  ft_strlcpy(ret_str, s1 + start_idx, end_idx - start_idx + 1);
+  return (ret_str);
+}
+```
+```c
+#include "libft.h"
+
+static int  ft_is_delimiter(char c, char delimiter)
+{
+  return (c == delimiter);
+}
+
+static size_t ft_get_word_cnt(char const *s, char c)
+{
+  size_t  word_cnt;
+  size_t  idx;
+  size_t  s_len;
+  
+  word_cnt = 0;
+  idx = 0;
+  s_len = ft_strlen(s);
+  while (idx < s_len)
+  {
+    if (ft_is_delimiter(s[idx], c) != 1)
+    {
+      word_cnt++;
+      idx++;
+      while (s[idx] && (ft_is_delimiter(s[idx], c) != 1))
+        idx++;
+      idx--;
+    }
+    idx++;
+  }
+  return (word_cnt);
+}
+
+static char  **ft_malloc_error(char **strs)
+{
+  size_t  idx;
+  
+  idx = 0;
+  while (strs[idx])
+  {
+    free(strs[idx]);
+    idx++;
+  }
+  free(strs);
+  return (0);
+}
+
+static char  **ft_get_split_str(char **strs, char const *s, size_t word_cnt, char c)
+{
+  char const  *s1;
+  char const  *temp;
+  size_t      s_idx;
+  
+  s1 = s;
+  s_idx = 0;
+  while (s_idx < word_cnt)
+  {
+    if (is_delimiter(*s1, c) != 1)
+    {
+      temp = s1;
+      while (*s1 && is_delimiter(*s1, c) != 1)
+        s1++;
+      strs[s_idx] = (char *)malloc(sizeof(char) * (s1 - temp + 1));
+      if (!strs[s_idx])
+        return (ft_malloc_error(strs));
+      ft_strlcpy(strs[s_idx], temp, s1 - temp + 1);
+      s_idx++;
+    }
+    s1++;
+  }
+  strs[s_idx] = '\0';
+  return (strs);
+}
+
+char    **ft_split(char const *s, char c)
+{
+  // "Allocates and returns an array of strings obtained by splitting 's' using the character 'c' as a delimiter. The array must be ended by a NULL pointer"
+  // s : the stinrg to be split
+  // c : the delimiter character
+  // return value : the array of new strings resulting from the split. NULL if the allocation fails
+  // 예외처리 : s가 NULL일 때, 메모리 할당 못 받았을 때
+  char          **strs;
+  size_t       word_cnt;
+  
+  if (!s)
+    return (0);
+  word_cnt = ft_get_word_cnt(s, c);
+  strs = (char **)malloc(sizeof(char *) * (word_cnt + 1));
+  if (!strs)
+    return (0);
+  strs = ft_get_split_str(strs, s, word_cnt, c);
+  if (!strs)
+    return (0);
+  return (strs);
+}
+```
+```c
+#include "libft.h"
+
+static size_t ft_int_len(long long nbr, unsigned int neg)
+{
+  unsigned int  len;
+  
+  if (nbr == 0)
+    return (1);
+  len = 0;
+  while (nbr > 0)
+  {
+    nbr /= 10;
+    len++;
+  }
+  return (len + neg);
+}
+
+char    *ft_itoa(int n)
+{
+  // "Allocates and returns a string representing the integer received as an argument. Negative numbers must be handled"
+  // n : the integer to convert
+  // return value : the string representing the integer. NULL if the allocation fails
+  long long     nbr;
+  unsigned int  neg;
+  unsigned int  len;
+  char          *str;
+  
+  nbr = (long long)n;
+  neg = 0;
+  if (nbr < 0)
+  {
+    nbr *= -1;
+    neg = 1;
+  }
+  len = ft_int_len(nbr, neg);
+  str = (char *)malloc(sizeof(char) * (len + 1));
+  if (!str)
+    return (0);
+  str[len] = '\0';
+  while (--len >= 0)
+  {
+    str[len] = '0' + (nbr % 10);
+    nbr /= 10;
+  }
+  if (neg == 1)
+    str[0] = '-';
+  return (str);
+}
+```
+```c
+#include "libft.h"
+
+char    *ft_strmapi(char const *s, char (*f)(unsigned int, char))
+{
+  // "Applies the function 'f' to each character of the string 's', and passing its index as first argument to create a new string resulting from successive applications of 'f'"
+  // s : the string on which to iterate
+  // f : the function to apply to each character
+  // return value : the string created from the successive applications of 'f'. Returns NULL if the allocation fails
+  // 예외처리 : s가 NULL일 때, f가 NULL일 때
+  unsigned int  len;
+  char          *ret_str;
+  unsigned int  idx;
+  
+  if (!s || !f)
+    return (0);
+  len = ft_strlen(s);
+  ret_str = (char *)malloc(sizeof(char) * (len + 1));
+  if (!ret_str)
+    return (0);
+  idx = 0;
+  while (s[idx])
+  {
+    ret_str[idx] = (*f)(idx, s[idx]);
+    idx++;
+  }
+  ret_str[idx] = '\0';
+  return (ret_str); 
+}
+```
+```c
+#include "libft.h"
+void    ft_striteri(char *s, void (*f)(unsigned int, char *))
+{
+  // "Applies the function f to each character of the string passed as argument, and passing its index as first argument. Each character is passed by address to f to be modified if necessay"
+  // s : the string on which to iterate
+  // f : the function to apply to each character
+  // return value : None
+  unsigned int  idx;
+  unsigned int  s_len;
+  
+  if (!s || !f)
+    return (0);
+  s_len = ft_strlen(s);
+  idx = 0;
+  while (idx < s_len)
+  {
+    (*f)(idx, &s[idx]);
+    idx++;
+  }
+}
+```
+```c
+#include "libft.h"
+
+void    ft_putchar_fd(char c, int fd)
+{
+  // "Outputs the character 'c' to the given file descriptor"
+  // c : the character to output
+  // fd : the file descriptor on which to write
+  // file descriptor : 프로세스에서 특정 파일에 접근할 때 사용하는 추상적인 값(파일의 인덱스??)
+  // return value : None
+  if (fd >= 0)
+    write(fd, &c, 1);
+}
+```
+```c
+#include "libft.h"
+
+void    ft_putstr_fd(char *s, int fd)
+{
+  // "Outputs the string 's' to the given file descriptor"
+  // s : the string to output
+  // fd : the file descriptor on which to write
+  // return value : None
+  if (s || (fd >= 0))
+    write(fd, s, ft_strlen(s));
+}
+```
+```c
+#include "libft.h"
+
+void    ft_putendl_fd(char *s, int fd)
+{
+  // "Outputs the string 's' to the given file descriptor, followed by a newline"
+  // s : the string to output
+  // fd : the file descriptor on which to write
+  if (s || (fd >= 0))
+  {
+    write(fd, s, ft_strlen(s));
+    write(fd, "\n", 1);
+  }
+}
+```
+```c
+#include "libft.h"
+
+static void ft_print_screen(long long nbr, int fd)
+{
+  char  c;
+  
+  if (nbr >= 10)
+  {
+    ft_print_screen(nbr / 10, fd);
+  }
+  c = nbr % 10 + '0'
+  write(fd, &c, 1);
+}
+
+void    ft_putnbr_fd(int n, int fd)
+{
+  // "Outputs the integer 'n' to the given file descriptor"
+  // n : the integer to output
+  // fd : the file descriptor on which to write
+  // return value : None
+  
+  long long nbr;
+  
+  nbr = (long long)n;
+  if (fd >= 0)
+  {
+    if (nbr < 0)
+    {
+      nbr *= -1;
+      write(fd, "-", 1);
+    }
+    ft_print_screen(nbr, fd);
+  }
+}
