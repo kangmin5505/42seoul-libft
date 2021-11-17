@@ -6,15 +6,16 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:11:01 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/16 16:49:10 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/17 18:12:50 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <string.h>
 # include <stdlib.h>
+# include <unistd.h>
+
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
