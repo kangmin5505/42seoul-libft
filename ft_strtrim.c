@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 18:32:31 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/17 19:31:25 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/18 16:51:06 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static size_t	ft_get_start_idx(char const *s1, char const *set)
 	return (idx);
 }
 
-static size_t	ft_get_end_idx(s1, set)
+static size_t	ft_get_end_idx(char const *s1, char const *set)
 {
 	size_t	s1_len;
 	size_t	idx;

@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 19:07:34 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/18 15:12:49 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/18 16:54:19 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ static char	**ft_get_strs(char **strs, char const *s, size_t word_cnt, char c)
 	s_idx = 0;
 	while (strs_idx < word_cnt)
 	{
-		if (is_delimiter(s[s_idx], c) != 1)
+		if (ft_is_delimiter(s[s_idx], c) != 1)
 		{
 			temp = s_idx;
-			while (s[s_idx] && (is_delimiter(s[s_idx], c) != 1))
+			while (s[s_idx] && (ft_is_delimiter(s[s_idx], c) != 1))
 				s_idx++;
 			strs[strs_idx] = (char *)malloc(sizeof(char) * (s_idx - temp + 1));
 			if (!strs[strs_idx])
 				return (ft_malloc_error(strs));
-			ft_strlcpy(strs[strs_idx], s[temp], s_idx - temp + 1);
+			ft_strlcpy(strs[strs_idx], s + temp, s_idx - temp + 1);
 			strs_idx++;
 		}
 		s_idx++;

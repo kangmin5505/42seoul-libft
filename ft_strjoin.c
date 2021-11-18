@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 18:25:30 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/17 18:32:05 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/18 20:43:03 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*ret_str;
+	char	*str;
 	size_t	s1_len;
 	size_t	s2_len;
 
@@ -29,10 +29,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	ret_str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
-	if (!ret_str)
+	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!str)
 		return (NULL);
-	ft_strlcpy(ret_str, s1, s1_len + 1);
-	ft_strlcat(ret_str, s2, s1_len + s2_len + 1);
-	return (ret_str);
+	ft_strlcpy(str, s1, s1_len + 1);
+	ft_strlcat(str + s1_len, s2, s2_len + 1);
+	return (str);
 }

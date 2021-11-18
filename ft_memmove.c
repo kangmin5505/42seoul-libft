@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 14:32:05 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/16 18:51:30 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/18 20:59:32 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 		d = (unsigned char *)dest;
 		s = (const unsigned char *)src;
 		while (n--)
-		{
 			d[n] = s[n];
-			n--;
-		}
 	}
 	return (dest);
+}

@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 15:41:53 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/16 15:44:35 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/18 20:43:45 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@ void	*ft_memchr(const void *src, int c, size_t n)
 			return ((void *)s);
 		s++;
 	}
-	return (0);
+	return (NULL);
 }

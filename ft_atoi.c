@@ -6,9 +6,16 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 15:58:58 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/16 16:02:17 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/18 16:46:20 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
+
+static int	ft_isspace(int c)
+{
+	return (c == ' ' || (unsigned)c - '\t' < 5);
+}
 
 int	ft_atoi(const char *nptr)
 {
