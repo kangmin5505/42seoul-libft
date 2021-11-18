@@ -66,6 +66,16 @@ void    ft_putchar_fd(char c, int fd);
 void    ft_putstr_fd(char *s, int fd);
 void    ft_putendl_fd(char *s, int fd);
 void    ft_putnbr_fd(int n, int fd);
+
+t_list  *ft_lstnew(void *content);
+void    ft_lstadd_front(t_list **lst, t_list *new);
+int     ft_lstsize(t_list *lst);
+t_list  *ft_lstlast(t_list *lst);
+void    ft_lstadd_back(t_list **lst, t_list *new);
+void    ft_lstdelone(t_list *lst, void (*del)(void *));
+void    ft_lstclear(t_list **lst, void (*del)(void *));
+void    ft_lstiter(t_list *lst, void (*f)(void *));
+t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 ```
 
 - Implement
@@ -886,4 +896,38 @@ void    ft_putnbr_fd(int n, int fd)
     ft_print_screen(nbr, fd);
   }
 }
+```
+### Bonus part
+- make bonus will add the bonus functions to the libft.a library
+![image](https://user-images.githubusercontent.com/74703501/142415704-8038ee11-9492-4d7f-b9e3-f637b2e25d01.png)   
+- content : The data contained in the element. The void * allows to store any kind of data
+- next : The next element's address or NULL if it's the last elementgg
+- typedef : 다른 자료형의 별명을 선언해주기위한 예약어
+- Implement
+```c
+t_list  *ft_lstnew(void *content)
+```
+```c
+void    ft_lstadd_front(t_list **lst, t_list *new)
+```
+```c
+int     ft_lstsize(t_list *lst)
+```
+```c
+t_list  *ft_lstlast(t_list *lst)
+```
+```c
+void    ft_lstadd_back(t_list **lst, t_list *new)
+```
+```c
+void    ft_lstdelone(t_list *lst, void (*del)(void *))
+```
+```c
+void    ft_lstclear(t_list **lst, void (*del)(void *))
+```
+```c
+void    ft_lstiter(t_list *lst, void (*f)(void *))
+```
+```c
+t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 ```
