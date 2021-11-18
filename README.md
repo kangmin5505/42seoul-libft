@@ -190,11 +190,8 @@ void  *ft_memmove(void *dest, const void *src, size_t n)
   {
     d = (unsigned char *)dest;
     s = (const unsigned char *)src;
-    while (n)
-    {
+    while (n--)
       d[n] = s[n];
-      n--;
-    }
   }
   return (dest);
 }
@@ -210,8 +207,10 @@ size_t  ft_strlcpy(char *dest, const char *src, size_t size)
   
   src_len = ft_strlen(src);
   idx = 0;
-  if (!(*dest || *src))
+  if (!dest && !src)
     return (0);
+  if (size == 0)
+    return (src_len);
   while (idx < src_len && idx + 1 < size)
   {
     dest[idx] = src[idx];
@@ -233,9 +232,10 @@ size_t  ft_strlcat(char *dest, const char *src, size_t size)
   
   dest_len = ft_strlen(dest);
   src_len = ft_strlen(src);
-  if (dest_len <= size)
+  if (dest_len + 1 > size)
     return (src_len + size);
-  while (dest[dest_len + idx] && (dest_len + idx + 1) < size)
+  idx = 0;
+  while (src[idx] && (dest_len + idx + 1) < size)
   {
     dest[dest_len + idx] = src[idx];
     idx++;
@@ -305,20 +305,20 @@ char  *ft_strrchr(const char *s, int c)
   // the terminating null byte is considered part of the string.
   int         s_len;
   char        find;
-  const char  *ret;
+  const char  *str;
   
   s_len = ft_strlen(s);
   find = (char)c;
-  ret = &s[s_len];
+  str = s
   while (s_len)
   {
-    if (ret[s_len] == find)
-      return (&ret[s_len]);
+    if (str[s_len] == find)
+      return ((char *)(ret + s_len));
     s_len--;
   }
-  if (ret[s_len] == find)
-    return (&ret[s_len]);
-  return (0);
+  if (str[s_len] == find)
+    return ((char *)str);
+  return (NULL);
 }
 ```
 ```c
@@ -362,7 +362,7 @@ void  *ft_memchr(const void *src, int c, size_t n)
       return ((void *)s);
     s++;
   }
-  return (0);
+  return (NULL);
 }
 ```
 ```c
@@ -398,19 +398,22 @@ char  *ft_strnstr(const char *str, const char *substr, size_t len)
   // "locate a substring in a string"
   // locates the first occurrence of the null-terminated string needle in the string haystack, where not more than len characters are searched.
   size_t      substr_len;
+  size_t      str_len;
   const char  *s;
   
   if (*substr == '\0')
     return ((char *)str);
   substr_len = ft_strlen(substr);
-  s = (const char *)str;
+  str_len = ft_strlen(str);
+  if (str_len < substr_len || len < substr_len)
+    return (NULL);
   while (*s && substr_len < len--)
   {
     if (ft_memcmp(s, substr, substr_len) == 0)
       return ((char *)s);
     s++;
   }
-  return (0);
+  return (NULL);
 }
 ```
 ```c
@@ -460,7 +463,7 @@ void    *ft_calloc(size_t count, size_t size)
   void  *mem;
   
   if (!(mem = malloc(count  * size)))
-    return (0);
+    return (NULL);
   ft_memset(mem, 0, (count * size));
   return (mem);
 }
@@ -479,11 +482,11 @@ char  *ft_strdup(const char *s1)
   size_t  idx;
   
   s_len = ft_strlen(s1);
-  mem = (char *)malloc(s_len * sizeof(char));
+  mem = (char *)malloc((s_len + 1) * sizeof(char));
   if (!mem)
-    return (0);
+    return (NULL);
   idx = 0;
-  while (*s1)
+  while (s1[idx])
   {
     mem[idx] = s1[idx];
     idx++;
@@ -536,7 +539,7 @@ char    *ft_strjoin(char const *s1, char const *s2)
   // return value : the new string. NULL if the allocation fails
   // 예외처리 : s1와 s2가 모두 없는 경우 NULL, 둘(s1, s2) 중 하나만 있는 경우 ft_strdup, 메모리 할당 못 받았을 때
   // 사용함수 : ft_strdup, ft_strlen, ft_strlcpy, ft_strlcat
-  char    *ret_str;
+  char    *str;
   size_t  s1_len;
   size_t  s2_len;
   
@@ -551,12 +554,12 @@ char    *ft_strjoin(char const *s1, char const *s2)
   }
   s1_len = ft_strlen(s1);
   s2_len = ft_strlen(s2);
-  ret_str = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
-  if (!new_str)
+  str = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+  if (!str)
     return (NULL);
-  ft_strlcpy(ret_str, s1, s1_len + 1);
-  ft_strlcat(ret_str, s2, s1_len + s2_len + 1);
-  return (ret_str);
+  ft_strlcpy(str, s1, s1_len + 1);
+  ft_strlcat(str + s1_len, s2, s2_len + 1);
+  return (str);
 }
 ```
 ```c
