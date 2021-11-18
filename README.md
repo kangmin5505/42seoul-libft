@@ -68,7 +68,7 @@ void    ft_putendl_fd(char *s, int fd);
 void    ft_putnbr_fd(int n, int fd);
 ```
 
-- Impliement
+- Implement
 ```c
 int ft_isalpha(int c)
 {
@@ -492,6 +492,10 @@ char  *ft_strdup(const char *s1)
   return (mem);
 }
 ```
+### Part 2 - Additional functions
+- Some of these functions can be useful to write Part 1's functions
+
+- Implement
 ```c
 #include "libft.h"
 
@@ -651,38 +655,35 @@ static char  **ft_malloc_error(char **strs)
   
   idx = 0;
   while (strs[idx])
-  {
-    free(strs[idx]);
-    idx++;
-  }
+    free(strs[idx++]);
   free(strs);
-  return (0);
+  return (NULL);
 }
 
-static char  **ft_get_split_str(char **strs, char const *s, size_t word_cnt, char c)
+static char  **ft_get_strs(char **strs, char const *s, size_t word_cnt, char c)
 {
-  char const  *s1;
-  char const  *temp;
-  size_t      s_idx;
+  size_t  strs_idx;
+  size_t  s_idx;
+  size_t  temp;
   
-  s1 = s;
+  strs_idx = 0;
   s_idx = 0;
-  while (s_idx < word_cnt)
+  while (strs_idx < word_cnt)
   {
-    if (is_delimiter(*s1, c) != 1)
+    if (is_delimiter(s[s_idx], c) != 1)
     {
-      temp = s1;
-      while (*s1 && is_delimiter(*s1, c) != 1)
-        s1++;
-      strs[s_idx] = (char *)malloc(sizeof(char) * (s1 - temp + 1));
-      if (!strs[s_idx])
+      temp = s_idx;
+      while (s[s_idx] && (is_delimiter(s[s_idx], c) != 1))
+        s_idx++;
+      strs[strs_idx] = (char *)malloc(sizeof(char) * (s_idx - temp + 1));
+      if (!strs[strs_idx])
         return (ft_malloc_error(strs));
-      ft_strlcpy(strs[s_idx], temp, s1 - temp + 1);
-      s_idx++;
+      ft_strlcpy(strs[strs_idx], s[temp], s_idx - temp + 1);
+      strs_idx++;
     }
-    s1++;
+    s_idx++;
   }
-  strs[s_idx] = '\0';
+  strs[strs_idx] = '\0';
   return (strs);
 }
 
@@ -697,21 +698,21 @@ char    **ft_split(char const *s, char c)
   size_t       word_cnt;
   
   if (!s)
-    return (0);
+    return (NULL);
   word_cnt = ft_get_word_cnt(s, c);
   strs = (char **)malloc(sizeof(char *) * (word_cnt + 1));
   if (!strs)
-    return (0);
-  strs = ft_get_split_str(strs, s, word_cnt, c);
+    return (NULL);
+  strs = ft_get_strs(strs, s, word_cnt, c);
   if (!strs)
-    return (0);
+    return (NULL);
   return (strs);
 }
 ```
 ```c
 #include "libft.h"
 
-static size_t ft_int_len(long long nbr, unsigned int neg)
+static unsigned int ft_int_len(long long nbr)
 {
   unsigned int  len;
   
@@ -723,7 +724,7 @@ static size_t ft_int_len(long long nbr, unsigned int neg)
     nbr /= 10;
     len++;
   }
-  return (len + neg);
+  return (len);
 }
 
 char    *ft_itoa(int n)
@@ -732,28 +733,25 @@ char    *ft_itoa(int n)
   // n : the integer to convert
   // return value : the string representing the integer. NULL if the allocation fails
   long long     nbr;
-  unsigned int  neg;
   unsigned int  len;
   char          *str;
   
   nbr = (long long)n;
-  neg = 0;
   if (nbr < 0)
-  {
     nbr *= -1;
-    neg = 1;
-  }
-  len = ft_int_len(nbr, neg);
+  len = ft_int_len(nbr);
+  if (nbr < 0)
+    len++;
   str = (char *)malloc(sizeof(char) * (len + 1));
   if (!str)
-    return (0);
+    return (NULL);
   str[len] = '\0';
   while (--len >= 0)
   {
     str[len] = '0' + (nbr % 10);
     nbr /= 10;
   }
-  if (neg == 1)
+  if (n < 0)
     str[0] = '-';
   return (str);
 }
@@ -769,27 +767,28 @@ char    *ft_strmapi(char const *s, char (*f)(unsigned int, char))
   // return value : the string created from the successive applications of 'f'. Returns NULL if the allocation fails
   // 예외처리 : s가 NULL일 때, f가 NULL일 때
   unsigned int  len;
-  char          *ret_str;
+  char          *str;
   unsigned int  idx;
   
   if (!s || !f)
-    return (0);
+    return (NULL);
   len = ft_strlen(s);
-  ret_str = (char *)malloc(sizeof(char) * (len + 1));
-  if (!ret_str)
-    return (0);
+  str = (char *)malloc(sizeof(char) * (len + 1));
+  if (!str)
+    return (NULL);
   idx = 0;
   while (s[idx])
   {
-    ret_str[idx] = (*f)(idx, s[idx]);
+    str[idx] = (*f)(idx, s[idx]);
     idx++;
   }
-  ret_str[idx] = '\0';
-  return (ret_str); 
+  str[idx] = '\0';
+  return (str); 
 }
 ```
 ```c
 #include "libft.h"
+
 void    ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
   // "Applies the function f to each character of the string passed as argument, and passing its index as first argument. Each character is passed by address to f to be modified if necessay"
@@ -797,16 +796,15 @@ void    ft_striteri(char *s, void (*f)(unsigned int, char *))
   // f : the function to apply to each character
   // return value : None
   unsigned int  idx;
-  unsigned int  s_len;
   
-  if (!s || !f)
-    return (0);
-  s_len = ft_strlen(s);
-  idx = 0;
-  while (idx < s_len)
+  if (s && f)
   {
-    (*f)(idx, &s[idx]);
-    idx++;
+    while (s[idx])
+    {
+      (*f)(idx, &s[idx]);
+      idx++;
+    }
+    s[idx] = '\0';
   }
 }
 ```
@@ -833,7 +831,7 @@ void    ft_putstr_fd(char *s, int fd)
   // s : the string to output
   // fd : the file descriptor on which to write
   // return value : None
-  if (s || (fd >= 0))
+  if (s && (fd >= 0))
     write(fd, s, ft_strlen(s));
 }
 ```
@@ -845,7 +843,7 @@ void    ft_putendl_fd(char *s, int fd)
   // "Outputs the string 's' to the given file descriptor, followed by a newline"
   // s : the string to output
   // fd : the file descriptor on which to write
-  if (s || (fd >= 0))
+  if (s && (fd >= 0))
   {
     write(fd, s, ft_strlen(s));
     write(fd, "\n", 1);
@@ -860,9 +858,7 @@ static void ft_print_screen(long long nbr, int fd)
   char  c;
   
   if (nbr >= 10)
-  {
     ft_print_screen(nbr / 10, fd);
-  }
   c = nbr % 10 + '0'
   write(fd, &c, 1);
 }
@@ -887,3 +883,4 @@ void    ft_putnbr_fd(int n, int fd)
     ft_print_screen(nbr, fd);
   }
 }
+```
