@@ -905,29 +905,181 @@ void    ft_putnbr_fd(int n, int fd)
 - typedef : 다른 자료형의 별명을 선언해주기위한 예약어
 - Implement
 ```c
+#include "libft.h"
+
 t_list  *ft_lstnew(void *content)
+{
+  // "Allocates and returns a new element. The variable 'content' is initialized with the value of the parameter 'content'. The variable 'next' is initialized to NULL."
+  // content : the content to create the new element with
+  // return value : the new element
+  t_list  *new;
+  
+  new = (t_list *)malloc(sizeof(t_list));
+  if (!new)
+    return (NULL);
+  new->content = content;
+  new->next = NULL;
+  return (new);
+}
 ```
 ```c
+#include "libft.h"
+
 void    ft_lstadd_front(t_list **lst, t_list *new)
+{
+  // "Adds the element 'new' at the beginning of the list."
+  // lst : the address of a pointer to the first link of a list
+  // new : the address of a pointer to the element to be added to the list
+  // return value : None
+  if (lst && new)
+  {
+    new->next = *lst;
+    *lst = new;
+  }
+}
 ```
 ```c
+#include "libft.h"
+
 int     ft_lstsize(t_list *lst)
+{
+  // "Counts the number of elements in a list."
+  // lst : the beginning of the list
+  // return value : length of the list
+  int size;
+  
+  size = 0;
+  while (lst)
+  {
+    lst = lst->next;
+    size++;
+  }
+  return (size);
+}
 ```
 ```c
+#include "libft.h"
+
 t_list  *ft_lstlast(t_list *lst)
+{
+  // "Returns the last element of the list."
+  // lst : the beginning of the list
+  // return value : last element of the list
+  if (!lst)
+    return (NULL);
+  while (lst->next)
+    lst = lst->next;
+  return (lst);
+}
 ```
 ```c
+#include "libft.h"
+
 void    ft_lstadd_back(t_list **lst, t_list *new)
+{
+  // "Adds the element 'new' at the end of the list."
+  // lst : the address of a pointer to the first link of a list
+  // new : the address of a pointer to the element to be added to the list
+  // return value : None
+  t_list  *last;
+  
+  if (lst && new)
+  {
+    if (*lst == NULL)
+    {
+      *lst = new;
+      return ;
+    }
+    last = ft_lstlast(*lst);
+    new->next = NULL;
+    last->next = new;
+  }
+}
 ```
 ```c
+#include "libft.h"
+
 void    ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+  // "Takes as a parameter an element and frees the memory of the element's content using the function 'del' given as a parameter and free the element. The memory of 'next' must not be freed."
+  // lst : the element to free
+  // del : the address of the function used to delete the content
+  // return value : None
+  if (lst && del)
+  {
+    del(lst->content);
+    free(lst);
+  }
+}
 ```
 ```c
+#include "libft.h"
+
 void    ft_lstclear(t_list **lst, void (*del)(void *))
+{
+  // "Deletes and frees the given element and every successor of that element, using the function 'del' and free. Finally, the pointer to the list must be set to NULL."
+  // lst : the address of a pointer to an element
+  // del : the address of the function used to delete the content of the element
+  // return value : None
+  t_list  *curr;
+  t_list  *next;
+  
+  curr = *lst;
+  while (curr)
+  {
+    next = curr->next;
+    ft_lstdelone(curr, del);
+    curr = next;
+  }
+  *lst = NULL;
+}
 ```
 ```c
+#include "libft.h"
+
 void    ft_lstiter(t_list *lst, void (*f)(void *))
+{
+  // "Iterates the list 'lst' and applies the function 'f' to the content of each element."
+  // lst : the address of a pointer to an element
+  // f : the address of the function used to iterate on the list
+  // return value : None
+  if (lst && f)
+  {
+    while (lst)
+    {
+      (*f)(lst->content);
+      lst = lst->next;
+    }
+  }
+}
 ```
 ```c
+#include "libft.h"
+
 t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+  // "Iterates the list 'lst' and applies the function 'f' to the content of each element. Creates a new list resulting of the successive applications of the function 'f'. The 'del' function is used to delete the content of an element if needed."
+  // lst : the address of a pointer to an element
+  // f : the address of the function used to iterate on the list
+  // del : the address of the function used to delete the content of an element if needed
+  // return value : the new list. NULL if the allocation fails
+  t_list  *result;
+  t_list  *temp;
+  
+  if (!lst || !f)
+    return (NULL)
+  result = NULL;
+  while (lst)
+  {
+    temp = ft_lstnew((*f)(lst->content));
+    if (!temp)
+    {
+      ft_lstclear(&result, del);
+      return (NULL);
+    }
+    ft_lstadd_back(&result, temp);
+    lst = lst->next;
+  }
+  return (result);
+}
 ```
