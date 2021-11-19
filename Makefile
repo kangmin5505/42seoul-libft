@@ -6,7 +6,7 @@
 #    By: kangkim <kangkim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/10 20:29:15 by kangkim           #+#    #+#              #
-#    Updated: 2021/11/18 16:38:51 by kangkim          ###   ########.fr        #
+#    Updated: 2021/11/19 15:52:24 by kangkim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,26 +52,41 @@ FILES = ft_isalpha	\
 	ft_putendl_fd	\
 	ft_putnbr_fd	\
 
+FILES_B = ft_lstnew	\
+	ft_lstadd_front	\
+	ft_lstsize		\
+	ft_lstlast		\
+	ft_lstadd_back	\
+	ft_lstdelone	\
+	ft_lstclear		\
+	ft_lstiter		\
+	ft_lstmap		\
+
 SRCS_DIR = ./
 SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
+SRCS_B = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES_B)))
 
 OBJS_DIR = ./
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
+OBJS_B = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES_B)))
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(AR) $@ $^
 
+bonus : $(OBJS_B)
+	$(AR) $(NAME) $^
+
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS) 
+	$(RM) $(OBJS) $(OBJS_B)
 
 fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re

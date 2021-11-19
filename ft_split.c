@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 19:07:34 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/18 16:54:19 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/19 15:40:23 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	**ft_get_strs(char **strs, char const *s, size_t word_cnt, char c)
 		}
 		s_idx++;
 	}
-	strs[strs_idx] = '\0';
+	strs[strs_idx] = NULL;
 	return (strs);
 }
 
