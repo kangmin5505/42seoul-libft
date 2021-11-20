@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 18:32:31 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/18 16:51:06 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/20 15:32:09 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (ft_strdup(s1));
 	start_idx = ft_get_start_idx(s1, set);
 	end_idx = ft_get_end_idx(s1, set);
+	if (start_idx >= end_idx)
+		return (ft_strdup(""));
 	ret_str = (char *)malloc(sizeof(char) * (end_idx - start_idx + 1));
 	if (!ret_str)
 		return (NULL);

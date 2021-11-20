@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 18:14:33 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/17 18:24:54 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/20 15:18:16 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t			new_len;
 	char			*substr;
 
-	s_len = (unsigned int)ft_strlen(s);
-	if (!s || (s_len < start))
+	if (!s)
 		return (NULL);
+	s_len = (unsigned int)ft_strlen(s);
+	if (s_len < start)
+		return (ft_strdup(""));
 	new_len = ft_strlen(s + start);
 	if (new_len < len)
 		len = new_len;
