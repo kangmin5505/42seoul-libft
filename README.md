@@ -339,17 +339,18 @@ int ft_strncmp(const char *s1, const char *s2, size_t n)
   // "compare two strings"
   // return an integer less than, equal to, or greater than zero if s1 is found,
   // respectively, to be less than, to match, or be greater than s2.
-  const char *ptr1;
-  const char *ptr2;
-
-  ptr1 = (const char *)s1;
-  ptr2 = (const char *)s2;
+  unsigned char *ptr1;
+  unsigned char *ptr2;
+  size_t        idx;
+  
+  ptr1 = (unsigned char *)s1;
+  ptr2 = (unsigned char *)s2;
+  idx = 0;
   while (n--)
   {
-    if (*ptr1 != *ptr2)
-      return ((int)(*ptr1 - *ptr2));
-    ptr1++;
-    ptr2++;
+    if (ptr1[idx] != ptr2[idx])
+      return ((int)(ptr1[idx] - ptr2[idx]));
+    idx++;
   }
   return (0);
 }
@@ -524,10 +525,12 @@ char    *ft_substr(char const *s, unsigned int start, size_t len)
   unsigned int  s_len;
   size_t        new_len;
   char          *substr;
-  
-  s_len = (unsigned int)ft_strlen(s);
-  if (!s || (s_len < start))
+
+  if (!s)
     return (NULL);
+  s_len = (unsigned int)ft_strlen(s);
+  if (s_len < start)
+    return (ft_strdup(""));
   new_len = ft_strlen(s + start);
   if (new_len < len)
     len = new_len;
@@ -623,6 +626,8 @@ char    *ft_strtrim(char const *s1, char const *set)
     return (ft_strdup(s1));
   start_idx = ft_get_start_idx(s1, set);
   end_idx = ft_get_end_idx(s1, set);
+  if (start_idx >= end_idx)
+    return (ft_strdup(""));
   ret_str = (char *)malloc(sizeof(char) * (end_idx - start_idx + 1));
   if (!ret_str)
     return (NULL);
@@ -982,6 +987,7 @@ void    ft_lstadd_back(t_list **lst, t_list *new)
   // new : the address of a pointer to the element to be added to the list
   // return value : None
   t_list  *last;
+  t_list  *new_last;
   
   if (lst && new)
   {
@@ -991,7 +997,8 @@ void    ft_lstadd_back(t_list **lst, t_list *new)
       return ;
     }
     last = ft_lstlast(*lst);
-    new->next = NULL;
+    new_last = ft_lstlast(new);
+    new_last->next = NULL;
     last->next = new;
   }
 }
