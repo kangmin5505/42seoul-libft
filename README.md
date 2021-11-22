@@ -174,6 +174,8 @@ void  *ft_memcpy(void *dest, const void *src, size_t n)
   unsigned char       *d;
   const unsigned char *s;
   
+  if (!dest && !src)
+    return (NULL);
   idx = 0;
   d = (unsigned char *)dest;
   s = (const unsigned char *)src;
@@ -348,7 +350,7 @@ int ft_strncmp(const char *s1, const char *s2, size_t n)
   idx = 0;
   while (n--)
   {
-    if (ptr1[idx] != ptr2[idx])
+    if (ptr1[idx] != ptr2[idx] || ptr1[idx] == 0 || ptr2[idx] == 0)
       return ((int)(ptr1[idx] - ptr2[idx]));
     idx++;
   }
