@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 15:58:58 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/18 16:46:20 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/22 17:52:55 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	ft_isspace(int c)
 
 int	ft_atoi(const char *nptr)
 {
-	int			n;
-	int			neg;
+	long long	n;
+	long long	neg;
 	const char	*s;
 
 	n = 0;
@@ -36,6 +36,12 @@ int	ft_atoi(const char *nptr)
 		s++;
 	}
 	while (ft_isdigit(*s))
+	{
+		if (n > 2147483647 && neg == -1)
+			return (-1);
+		if (n > 2147483648 && neg == 1)
+			return (0);
 		n = 10 * n - (*s++ - '0');
-	return (neg * n);
+	}
+	return ((int)(neg * n));
 }

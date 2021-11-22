@@ -6,7 +6,7 @@
 #    By: kangkim <kangkim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/10 20:29:15 by kangkim           #+#    #+#              #
-#    Updated: 2021/11/19 15:52:24 by kangkim          ###   ########.fr        #
+#    Updated: 2021/11/22 17:38:47 by kangkim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,13 +70,19 @@ OBJS_DIR = ./
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 OBJS_B = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES_B)))
 
+ifdef WITH_BONUS
+	OBJ_FILES = $(OBJS) $(OBJS_B)
+else
+	OBJ_FILES = $(OBJS)
+endif
+
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJ_FILES)
 	$(AR) $@ $^
 
-bonus : $(OBJS_B)
-	$(AR) $(NAME) $^
+bonus : 
+	make WITH_BONUS=1 all
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
