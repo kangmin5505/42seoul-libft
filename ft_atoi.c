@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 15:58:58 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/22 17:52:55 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/11/23 15:48:52 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,27 @@ static int	ft_isspace(int c)
 int	ft_atoi(const char *nptr)
 {
 	long long	n;
-	long long	neg;
-	const char	*s;
+	int			sign;
+	long long	ll_check;
 
 	n = 0;
-	neg = -1;
-	s = nptr;
-	while (ft_isspace(*s))
-		s++;
-	if (*s == '+')
-		s++;
-	else if (*s == '-')
+	sign = 1;
+	ll_check = LLONG_MAX / 10;
+	while (ft_isspace(*nptr))
+		nptr++;
+	if (*nptr == '+' || *nptr == '-')
 	{
-		neg = 1;
-		s++;
+		if (*nptr == '-')
+			sign = -1;
+		nptr++;
 	}
-	while (ft_isdigit(*s))
+	while (ft_isdigit(*nptr))
 	{
-		if (n > 2147483647 && neg == -1)
+		if (sign == 1 && (n > ll_check || (n == ll_check && *nptr - '0' >= 7)))
 			return (-1);
-		if (n > 2147483648 && neg == 1)
+		if (sign == -1 && (n > ll_check || (n == ll_check && *nptr - '0' >= 8)))
 			return (0);
-		n = 10 * n - (*s++ - '0');
+		n = 10 * n + (*nptr++ - '0');
 	}
-	return ((int)(neg * n));
+	return (sign * (int)n);
 }
