@@ -1,5 +1,6 @@
 # 42seoul-libft
-42seoul libft project
+- 42seoul libft project
+- 참고 자료 - [musl-libc](https://git.musl-libc.org/cgit/musl/tree/src)
 
 ## Common Instructions
 - Norm
@@ -444,25 +445,30 @@ int ft_atoi(const char *nptr)
   // convert the initial portion of the string pointed to by nptr to int.
   // return converted value
   // compute n as a negative number to avoid overflow on INT_MIN
-  int        n;
-  int        neg;
-  const char *s;
+  long long n;
+  int       sign;
+  long long ll_check;
   
   n = 0;
-  neg = -1;
-  s = nptr;
-  while (ft_isspace(*s))
-    s++;
-  if (*s == '+')
-    s++;
-  else if (*s == '-')
+  sign = 1;
+  ll_check = LLONG_MAX / 10;
+  while (ft_isspace(*nptr))
+    nptr++;
+  if (*nptr == '+' || *nptr == '-')
   {
-    neg = 1;
-    s++;
+    if (*nptr == '-')
+      sign = -1;
+    nptr++;
   }
-  while (ft_isdigit(*s))
-    n = 10 * n - (*s++ - '0');
-  return (neg * n);
+  while (ft_isdigit(*nptr))
+  {
+    if (sign == 1 && (n > ll_check || (n == ll_check && *nptr - '0' >= 7)))
+      return (-1);
+    if (sign == -1 && (n > ll_check || (n == ll_check && *nptr - '0' >= 8)))
+      return (0);
+    n = 10 * n + (*nptr++ - '0');
+  }
+  return (sign * (int)n));
 }
 ```
 ```c
@@ -904,7 +910,7 @@ void    ft_putnbr_fd(int n, int fd)
   }
 }
 ```
-### Bonus part
+## Bonus part
 - make bonus will add the bonus functions to the libft.a library
 ![image](https://user-images.githubusercontent.com/74703501/142415704-8038ee11-9492-4d7f-b9e3-f637b2e25d01.png)   
 - content : The data contained in the element. The void * allows to store any kind of data
@@ -1092,3 +1098,14 @@ t_list  *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
   return (result);
 }
 ```
+## What I leaned
+1. 함수 구현
+2. 예외처리
+3. Makefile relink 해결 방법
+
+### General reviews
+libft 과제에서는 c언어의 라이브러리 일부를 구현해봤다.\
+과제를 수행하며, 문서를 읽고 함수를 구현하는 능력과 예상하지 못한 예외를 해결하는 능력, 마지막으로 Makefile에서 relink가 발생했을 때 이를 해결하는 능력이 향상되었다고 생각한다.\
+다음 과제를 수행함에 있어서, 스스로 문제 해결을 해보고 다른 사람의 방법도 많이 확인해봐야겠다고 생각했다.\
+그렇게 생각한 이유는 이 과제를 하는 목적이 단순히 통과가 아닌, 하나의 문제를 해결할 수 있는 여러가지 방법을 접함으로써 시야를 넓히는 것이 목적이기 때문이다.\
+나의 목표인 공통과정 통과까지는 대략 30개의 과제가 있는데, 각각의 과제를 수행하며 이 마음가짐을 잃지 않고 학습에 집중해야겠다.
