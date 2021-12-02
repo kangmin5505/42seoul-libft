@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 15:29:23 by kangkim           #+#    #+#             */
-/*   Updated: 2021/12/02 16:00:42 by kangkim          ###   ########.fr       */
+/*   Created: 2021/12/02 14:23:19 by kangkim           #+#    #+#             */
+/*   Updated: 2021/12/02 14:30:14 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+int	ft_putchar(int c)
 {
-	char	find;
-	char	*ret;
-
-	find = (char)c;
-	ret = (char *)s;
-	while (*ret)
-	{
-		if (*ret == find)
-			return (ret);
-		ret++;
-	}
-	if (*ret == find)
-		return (ret);
-	return (NULL);
+	return (write(STDOUT_FILENO, &c, 1));
 }
