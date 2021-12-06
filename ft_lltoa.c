@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:08:59 by kangkim           #+#    #+#             */
-/*   Updated: 2021/12/06 14:11:20 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/12/06 14:13:54 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static long long	ft_int_len(long long nbr)
 char	*ft_lltoa(long long n)
 {
 	long long		nbr;
-	unsigned int	len;
+	long long		len;
 	char			*str;
 
 	nbr = n;
