@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:11:01 by kangkim           #+#    #+#             */
-/*   Updated: 2021/12/06 14:11:55 by kangkim          ###   ########.fr       */
+/*   Updated: 2021/12/06 17:29:39 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* my function */
 int		ft_putchar(int c);
 int		ft_putstr(const char *s);
-char	*ft_lltoa(long long n);
+char	*ft_lltoa_base(long long n, int base);
+char	*ft_uitoa(unsigned int n);
+char	*ft_uitoa_base(unsigned int n, int base);
 
 #endif

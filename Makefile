@@ -6,7 +6,7 @@
 #    By: kangkim <kangkim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/10 20:29:15 by kangkim           #+#    #+#              #
-#    Updated: 2021/12/06 14:11:37 by kangkim          ###   ########.fr        #
+#    Updated: 2021/12/06 16:49:48 by kangkim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,8 @@ FILES = ft_isalpha	\
 	ft_putchar		\
 	ft_putstr		\
 	ft_lltoa		\
+	ft_uitoa		\
+	ft_uitoa_base	\
 
 FILES_B = ft_lstnew	\
 	ft_lstadd_front	\
