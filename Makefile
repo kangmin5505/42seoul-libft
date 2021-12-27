@@ -6,9 +6,13 @@
 #    By: kangkim <kangkim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/10 20:29:15 by kangkim           #+#    #+#              #
-#    Updated: 2021/12/06 16:49:48 by kangkim          ###   ########.fr        #
+#    Updated: 2021/12/27 22:12:45 by kangkim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# Colors
+_END	=	\033[0;0m
+_GREEN	=	\033[0;32m
 
 NAME = libft.a
 
@@ -84,19 +88,27 @@ endif
 all: $(NAME)
 
 $(NAME): $(OBJ_FILES)
-	$(AR) $@ $^
+	@echo "$(_GREEN)[ Try to make $(NAME) ]$(_END)"
+	@$(AR) $@ $^
+	@echo "$(_GREEN)[ Done ]$(_END)"
 
 bonus : 
-	make WITH_BONUS=1 all
+	@echo "$(_GREEN)[ Try to make bonus ]$(_END)"
+	@make WITH_BONUS=1 all
+	@echo "$(_GREEN)[ Done ]$(_END)"
 
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS) $(OBJS_B)
+	@echo "$(_GREEN)[ Try to clean]$(_END)"
+	@$(RM) $(OBJS) $(OBJS_B)
+	@echo "$(_GREEN)[ Done ]$(_END)"
 
 fclean: clean
-	$(RM) $(NAME)
+	@echo "$(_GREEN)[ Try to fclean]$(_END)"
+	@$(RM) $(NAME)
+	@echo "$(_GREEN)[ Done ]$(_END)"
 
 re: fclean all
 
