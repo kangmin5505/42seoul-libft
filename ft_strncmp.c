@@ -6,7 +6,7 @@
 /*   By: kangkim <kangkim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 15:35:53 by kangkim           #+#    #+#             */
-/*   Updated: 2021/11/22 14:55:44 by kangkim          ###   ########.fr       */
+/*   Updated: 2022/01/22 19:39:35 by kangkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 			return ((int)(ptr1[idx] - ptr2[idx]));
 		idx++;
 	}
-	return (0);
+	return ((int)(ptr1[idx] - ptr2[idx]));
 }
